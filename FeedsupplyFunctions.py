@@ -52,23 +52,32 @@ def md_to_dmd(md):
 
 
 def f_effective_mei(dmi, md, threshold, ri=1, eff_above=0.5):
-    """Calculate MEI and scale for reduced efficiency if quality is above animal requirements.
+    """Calculate MEI and scale for reduced efficiency if feed quality is above the animal requirements and the
+       voluntary feed intake would be greater than that required to meet the target LW profile.
+       This would then necessitate rationing the animal or switching to a lower quality feed source for a period
+       while the animal lost weight.
+       Rationing would not reduce the efficiency of utilising the high quality feed source. AN example of this is
+       offering limited quantities of supplementary feed, or using strip grazing to ration intake on green pasture.
+       Whereas allowing weight gain and then following with a period of LW loss reduces efficiency because the
+       efficiency of LW gain (kg) is lower than the efficiency of maintenance (km).
+       The effective mei varies for each feed pool (v) because the feed quality required to meet the target profile
+       varies between pools. The target profile is based on the mid-point of the feed pool.
 
-    :param dmi: value or array - Dry matter intake (kg).
+    :param dmi: value or array - Dry matter intake of the feed decision variable (kg).
     :param md: value or array - M/D of the feed (MJ of ME / kg of DM).
     :param threshold: value or array - Diet quality (ME/Vol) required by animals. Below the threshold: effective m/d == m/d
-    :param ri: value or array, optional (1.0) - Relative intake (quality and quantity).
+    :param ri: value or array, optional (1.0) - Relative intake of the feed (quality and quantity).
     :param eff_above: value or array, optional (0.5) - Efficiency that energy is used if above required quality, and
                       animals are gaining then losing weight.
 
     If inputs are provided in arrays then they must be broadcastable.
 
-    :return: ME available to the animal to meet their ME requirements, from the quantity of DM consumed.
+    :return: ME available to the animal to meet their ME requirements for the target profile, from the quantity of DM consumed in the feed decision variable.
 
     """
-    fec = md * ri
-    fec_effective  = np.minimum(fec, threshold + (fec - threshold) * eff_above)
-    md_effective = fec_effective / ri
+    fev = md * ri
+    fev_effective  = np.minimum(fev, threshold + (fev - threshold) * eff_above)
+    md_effective = fev_effective / ri
     mei_effective = dmi * md_effective
     return mei_effective
 
