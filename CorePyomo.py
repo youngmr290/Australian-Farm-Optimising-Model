@@ -179,7 +179,7 @@ def coremodel_all(params, trial_name, model):
     ###################### 
     ##green grazing on crop paddock before seeding
     def poc(model,f,l):
-        return -macpy.ha_pasture_crop_paddocks(model,f,l) * model.p_poc_con[f,l] + sum(model.v_poc[v,f,l] for v in model.s_feed_pools) <=0
+        return -macpy.ha_days_pasture_crop_paddocks(model,f,l) * model.p_poc_con[f,l] + sum(model.v_poc[v,f,l] for v in model.s_feed_pools) <=0
     model.con_poc_available = pe.Constraint(model.s_feed_periods, model.s_lmus, rule=poc, doc='constraint between poc available and consumed')
 
     ######################

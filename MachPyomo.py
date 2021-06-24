@@ -139,9 +139,9 @@ def f_con_sow_supply(model):
 #functions for core model         #
 ###################################   
 
-def ha_pasture_crop_paddocks(model,f,l):
+def ha_days_pasture_crop_paddocks(model,f,l):
     '''
-    Calculate the total hectares that can be grazed on crop paddocks before seeding based on the
+    Calculate the total hectare grazing days that can be grazed on crop paddocks before seeding based on the
     seeding activities selected.
 
     Used in global constraint (con_poc_available). See CorePyomo
@@ -150,10 +150,10 @@ def ha_pasture_crop_paddocks(model,f,l):
     '''
 
     ##number of grazable pasture ha provided by contract seeding
-    ha_contract= sum(sum(model.p_seeding_grazingdays[f,p] * model.v_contractseeding_ha[p,k,l] for k in model.s_crops) for p in model.s_labperiods)
+    ha_days_contract= sum(sum(model.p_seeding_grazingdays[f,p] * model.v_contractseeding_ha[p,k,l] for k in model.s_crops) for p in model.s_labperiods)
     ##number of grazable pasture ha provided by farmer seeding
-    ha_personal= sum(sum(model.p_seeding_grazingdays[f,p] * model.p_seeding_rate[k,l] * model.v_seeding_machdays[p,k,l] for k in model.s_crops) for p in model.s_labperiods)
-    return ha_contract + ha_personal
+    ha_days_personal= sum(sum(model.p_seeding_grazingdays[f,p] * model.p_seeding_rate[k,l] * model.v_seeding_machdays[p,k,l] for k in model.s_crops) for p in model.s_labperiods)
+    return ha_days_contract + ha_days_personal
 
 #function to determine late seeding penalty, this will be passed to core model
 def late_seed_penalty(model,g,k):
