@@ -6303,9 +6303,10 @@ def generator(params,r_vals,ev,plots = False):
     ####################
     #report stock days #
     ####################
-    ##this needs to be accounted for when reporting things that have p6 and v axis because they are both periods that do not align and the number variable
-    ##returned from pyomo does not have p6 axis. So need to account for the propn of the dvp that the feed period exists.
-    ##^this is not quite perfect because a_p6_p is such that a generator period is a whole feed period eg if the feed period changed mid gen period the proportion will be slightly off (exaggerated for smaller feed periods).
+    ##this needs to be accounted for when reporting variables that have p6 and v axis because they are both periods that do not align
+    ##and the number variable returned from pyomo does not have p6 axis. So need to account for the propn of the dvp that the feed period exists.
+    ##using a_p6_p is not perfect because a_p6_p is such that a generator period is only allocated to a single feed period
+    ## eg if the feed period changed mid gen period the proportion will be slightly off (exaggerated for smaller feed periods).
     stock_days_p6fa1e1b1nwzida0e0b0xyg0 = sfun.f_p2v_std(on_hand_pa1e1b1nwzida0e0b0xyg0, numbers_p=o_numbers_end_psire,
                                         days_period_p=days_period_pa1e1b1nwzida0e0b0xyg0, a_any1_p=a_ev_pa1e1b1nwzida0e0b0xyg0, index_any1tvp=index_fpa1e1b1nwzida0e0b0xyg,
                                         a_any2_p=a_p6_pa1e1b1nwzida0e0b0xyg, index_any2any1tvp=index_p6pa1e1b1nwzida0e0b0xyg[:,na,...])
