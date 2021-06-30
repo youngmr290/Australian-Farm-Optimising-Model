@@ -5135,8 +5135,8 @@ def generator(params,r_vals,ev,plots = False):
     # ev_cutoff_p6fz = t_evmax_p6z[:,na,:] * ev_propn_f[na,:,na] + t_evmin_p6z[:,na,:] * (1 - ev_propn_f[na,:,na])
 
     ##create the upper and lower cutoffs. If there is a confinement slice then it will be populated with values but they never get used.
-    fev_upper_p6fpg = fun.f_expand(sinp.structuralsa['i_fev_upper_p6'], p_pos-2)
-    fev_lower_p6fpg = fun.f_expand(sinp.structuralsa['i_fev_lower_p6'], p_pos-2)
+    fev_upper_p6fpg = fun.f_expand(sinp.structuralsa['i_nv_upper_p6'], p_pos-2)
+    fev_lower_p6fpg = fun.f_expand(sinp.structuralsa['i_nv_lower_p6'], p_pos-2)
     fev_cutoff_lower_p6fpg = fev_lower_p6fpg + (fev_upper_p6fpg - fev_lower_p6fpg)/n_non_confinement_pools * index_fpa1e1b1nwzida0e0b0xyg
     fev_cutoff_upper_p6fpg = fev_lower_p6fpg + (fev_upper_p6fpg - fev_lower_p6fpg)/n_non_confinement_pools * (index_fpa1e1b1nwzida0e0b0xyg + 1)
     ###Average these values to be passed to Pasture.py for efficiency of utilising ME and add to the dict
