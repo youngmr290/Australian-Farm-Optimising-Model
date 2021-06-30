@@ -646,7 +646,7 @@ def generator(params,r_vals,ev,plots = False):
     #todo add a distribution to the windspeed (after checking the importance for chill_index)
     #might need to do this with a longer axis length so that it is not the distribution in the week but in the month
     #enter a number of days above a threshold (along with the threshold values maybe 1) and then average values for the windiest days in the month.
-    ws_m4a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_ws_m4'],p_pos)
+    ws_p4a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_ws_p4'],p_pos)
     ##expected stocking density
     density_p6a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_density_p6z'],z_pos,source=0,dest=-1,
                                                   left_pos2=p_pos,
@@ -656,17 +656,17 @@ def generator(params,r_vals,ev,plots = False):
     ##nutrition adjustment for expected stocking density
     density_nwzida0e0b0xyg1 = fun.f_expand(sinp.structuralsa['i_density_n1'][0:n_fs_dams],n_pos) # cut to the correct length based on number of nutrition options (i_len_n structural input)
     density_nwzida0e0b0xyg3 = fun.f_expand(sinp.structuralsa['i_density_n3'][0:n_fs_offs],n_pos) # cut to the correct length based on number of nutrition options (i_len_n structural input)
-    ##Calculation of rainfall distribution across the week - i_rain_distribution_m4m1 = how much rain falls on each day of the week sorted in order of quantity of rain. SO the most rain falls on the day with the highest rainfall.
-    rain_m4a1e1b1nwzida0e0b0xygm1 = fun.f_expand(
-        pinp.sheep['i_rain_m4'][...,na] * pinp.sheep['i_rain_distribution_m4m1'] * (7 / 30.4),p_pos - 1,
+    ##Calculation of rainfall distribution across the week - i_rain_distribution_p4m1 = how much rain falls on each day of the week sorted in order of quantity of rain. SO the most rain falls on the day with the highest rainfall.
+    rain_p4a1e1b1nwzida0e0b0xygm1 = fun.f_expand(
+        pinp.sheep['i_rain_p4'][...,na] * pinp.sheep['i_rain_distribution_p4m1'] * (7 / 30.4),p_pos - 1,
         right_pos=-1)  # -1 because p is -16 when m1 axis is included
     ##Mean daily temperature
     #todo examine importance of temperature variation on chill_index with view to adding
-    temp_ave_m4a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_temp_ave_m4'],p_pos)
+    temp_ave_p4a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_temp_ave_p4'],p_pos)
     ##Mean daily maximum temperature
-    temp_max_m4a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_temp_max_m4'],p_pos)
+    temp_max_p4a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_temp_max_p4'],p_pos)
     ##Mean daily minimum temperature
-    temp_min_m4a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_temp_min_m4'],p_pos)
+    temp_min_p4a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_temp_min_p4'],p_pos)
     ##latitude
     lat_deg = pinp.sheep['i_latitude']
     lat_rad = np.radians(pinp.sheep['i_latitude'])
@@ -1004,7 +1004,7 @@ def generator(params,r_vals,ev,plots = False):
     a_g2_p7_p = np.apply_along_axis(sfun.f_next_prev_association, 0, pinp.sheep['i_eqn_date_g2_p7'].astype('datetime64[D]'), date_end_p, 1,'right')
     a_g3_p7_p = np.apply_along_axis(sfun.f_next_prev_association, 0, pinp.sheep['i_eqn_date_g3_p7'].astype('datetime64[D]'), date_end_p, 1,'right')
     ##month of each period (0 - 11 not 1 -12 because this is association array)
-    a_m4_p = date_start_p.astype('datetime64[M]').astype(int) % 12
+    a_p4_p = date_start_p.astype('datetime64[M]').astype(int) % 12
     ##feed variation period
     a_fvp_pa1e1b1nwzida0e0b0xyg1 = np.apply_along_axis(sfun.f_next_prev_association, 0, fvp_date_start_fa1e1b1nwzida0e0b0xyg1, date_end_p, 1,'right')
     a_fvp_pa1e1b1nwzida0e0b0xyg3 = np.apply_along_axis(sfun.f_next_prev_association, 0, fvp_date_start_fa1e1b1nwzida0e0b0xyg3, offs_date_end_p, 1,'right')
@@ -1082,11 +1082,11 @@ def generator(params,r_vals,ev,plots = False):
     sire_propn_pa1e1b1nwzida0e0b0xyg1g0=sire_propn_pa1e1b1nwzida0e0b0xyg1[..., na] * (a_g0_g1[:,na] == sire_include_idx) #add g0 axis
 
     ##weather
-    ws_pa1e1b1nwzida0e0b0xyg = ws_m4a1e1b1nwzida0e0b0xyg[a_m4_p]
-    rain_pa1e1b1nwzida0e0b0xygm1 = rain_m4a1e1b1nwzida0e0b0xygm1[a_m4_p]
-    temp_ave_pa1e1b1nwzida0e0b0xyg= temp_ave_m4a1e1b1nwzida0e0b0xyg[a_m4_p]
-    temp_max_pa1e1b1nwzida0e0b0xyg= temp_max_m4a1e1b1nwzida0e0b0xyg[a_m4_p]
-    temp_min_pa1e1b1nwzida0e0b0xyg= temp_min_m4a1e1b1nwzida0e0b0xyg[a_m4_p]
+    ws_pa1e1b1nwzida0e0b0xyg = ws_p4a1e1b1nwzida0e0b0xyg[a_p4_p]
+    rain_pa1e1b1nwzida0e0b0xygm1 = rain_p4a1e1b1nwzida0e0b0xygm1[a_p4_p]
+    temp_ave_pa1e1b1nwzida0e0b0xyg= temp_ave_p4a1e1b1nwzida0e0b0xyg[a_p4_p]
+    temp_max_pa1e1b1nwzida0e0b0xyg= temp_max_p4a1e1b1nwzida0e0b0xyg[a_p4_p]
+    temp_min_pa1e1b1nwzida0e0b0xyg= temp_min_p4a1e1b1nwzida0e0b0xyg[a_p4_p]
 
     ##feed variation
     fvp_type_pa1e1b1nwzida0e0b0xyg1 = np.take_along_axis(fvp_type_fa1e1b1nwzida0e0b0xyg1,a_fvp_pa1e1b1nwzida0e0b0xyg1,0)
@@ -4517,11 +4517,11 @@ def generator(params,r_vals,ev,plots = False):
     period_is_assetvalue_pa1e1b1nwzida0e0b0xyg = sfun.f_period_is_('period_is', assetvalue_timing_pa1e1b1nwzida0e0b0xyg, date_start_pa1e1b1nwzida0e0b0xyg, date_end_p = date_end_pa1e1b1nwzida0e0b0xyg)
     ###feed pool - sheep are grouped based on energy volume ratio
     ##wool
-    vm_m4a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_vm_m4'], p_pos).astype(dtype)
-    pmb_m4s4a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_pmb_m4s'], p_pos).astype(dtype)
+    vm_p4a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_vm_p4'], p_pos).astype(dtype)
+    pmb_p4s4a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_pmb_p4s'], p_pos).astype(dtype)
     ##sale
     score_range_s8s6pa1e1b1nwzida0e0b0xyg = fun.f_expand(uinp.sheep['i_salep_score_range_s8s6'], p_pos - 1).astype(dtype)
-    price_adj_months_s7s9m4a1e1b1nwzida0e0b0xyg = fun.f_expand(uinp.sheep['i_salep_months_priceadj_s7s9m4'], p_pos).astype(dtype)
+    price_adj_months_s7s9p4a1e1b1nwzida0e0b0xyg = fun.f_expand(uinp.sheep['i_salep_months_priceadj_s7s9p4'], p_pos).astype(dtype)
     dresspercent_adj_s6pa1e1b1nwzida0e0b0xyg = fun.f_expand(uinp.sheep['i_salep_dressp_adj_s6'], p_pos-1).astype(dtype)
     dresspercent_adj_s7pa1e1b1nwzida0e0b0xyg = fun.f_expand(uinp.sheep['i_salep_dressp_adj_s7'], p_pos-1).astype(dtype)
     score_pricescalar_s7s5s6 = uinp.sheep['i_salep_score_scalar_s7s5s6'].astype(dtype)
@@ -4871,13 +4871,13 @@ def generator(params,r_vals,ev,plots = False):
     period_is_shearing_p9a1e1b1nwzida0e0b0xyg1 = period_is_shearing_pa1e1b1nwzida0e0b0xyg1[shear_mask_p1,...]
     period_is_shearing_tp9a1e1b1nwzida0e0b0xyg3 = period_is_shearing_tpa1e1b1nwzida0e0b0xyg3[:,shear_mask_p3,...]
     ###Vegatative Matter if shorn(end)
-    vm_p9a1e1b1nwzida0e0b0xyg0 = vm_m4a1e1b1nwzida0e0b0xyg[a_m4_p,...][shear_mask_p0]
-    vm_p9a1e1b1nwzida0e0b0xyg1 = vm_m4a1e1b1nwzida0e0b0xyg[a_m4_p,...][shear_mask_p1]
-    vm_p9a1e1b1nwzida0e0b0xyg3 = vm_m4a1e1b1nwzida0e0b0xyg[a_m4_p[mask_p_offs_p],...][shear_mask_p3]
+    vm_p9a1e1b1nwzida0e0b0xyg0 = vm_p4a1e1b1nwzida0e0b0xyg[a_p4_p,...][shear_mask_p0]
+    vm_p9a1e1b1nwzida0e0b0xyg1 = vm_p4a1e1b1nwzida0e0b0xyg[a_p4_p,...][shear_mask_p1]
+    vm_p9a1e1b1nwzida0e0b0xyg3 = vm_p4a1e1b1nwzida0e0b0xyg[a_p4_p[mask_p_offs_p],...][shear_mask_p3]
     ###pmb - a little complex because it is dependent on time since previous shearing
-    pmb_p9s4a1e1b1nwzida0e0b0xyg0 = pmb_m4s4a1e1b1nwzida0e0b0xyg[a_m4_p,...][shear_mask_p0]
-    pmb_p9s4a1e1b1nwzida0e0b0xyg1 = pmb_m4s4a1e1b1nwzida0e0b0xyg[a_m4_p,...][shear_mask_p1]
-    pmb_p9s4a1e1b1nwzida0e0b0xyg3 = pmb_m4s4a1e1b1nwzida0e0b0xyg[a_m4_p[mask_p_offs_p],...][shear_mask_p3]
+    pmb_p9s4a1e1b1nwzida0e0b0xyg0 = pmb_p4s4a1e1b1nwzida0e0b0xyg[a_p4_p,...][shear_mask_p0]
+    pmb_p9s4a1e1b1nwzida0e0b0xyg1 = pmb_p4s4a1e1b1nwzida0e0b0xyg[a_p4_p,...][shear_mask_p1]
+    pmb_p9s4a1e1b1nwzida0e0b0xyg3 = pmb_p4s4a1e1b1nwzida0e0b0xyg[a_p4_p[mask_p_offs_p],...][shear_mask_p3]
     period_current_shearing_p9a1e1b1nwzida0e0b0xyg0 = np.maximum.accumulate(a_p_p9a1e1b1nwzida0e0b0xyg0 * period_is_shearing_p9a1e1b1nwzida0e0b0xyg0, axis=0) #returns the period number that the most recent shearing occurred
     period_current_shearing_p9a1e1b1nwzida0e0b0xyg1 = np.maximum.accumulate(a_p_p9a1e1b1nwzida0e0b0xyg1 * period_is_shearing_p9a1e1b1nwzida0e0b0xyg1, axis=0) #returns the period number that the most recent shearing occurred
     period_current_shearing_tp9a1e1b1nwzida0e0b0xyg3 = np.maximum.accumulate(a_p_p9a1e1b1nwzida0e0b0xyg3 * period_is_shearing_tp9a1e1b1nwzida0e0b0xyg3, axis=1) #returns the period number that the most recent shearing occurred
@@ -4933,8 +4933,8 @@ def generator(params,r_vals,ev,plots = False):
     sale_mask_p3 = fun.f_reduce_skipfew(np.any, np.logical_or(period_is_sale_tpa1e1b1nwzida0e0b0xyg3, period_is_assetvalue_pa1e1b1nwzida0e0b0xyg[mask_p_offs_p]), preserveAxis=1)  #preforms np.any on all axis except 1
     ###manipulate axis with associations
     grid_scorerange_s7s6pa1e1b1nwzida0e0b0xyg = score_range_s8s6pa1e1b1nwzida0e0b0xyg[uinp.sheep['ia_s8_s7']] #s8 to s7
-    month_scalar_s7pa1e1b1nwzida0e0b0xyg = price_adj_months_s7s9m4a1e1b1nwzida0e0b0xyg[:, 0, a_m4_p] #month to p
-    month_discount_s7pa1e1b1nwzida0e0b0xyg = price_adj_months_s7s9m4a1e1b1nwzida0e0b0xyg[:, 1, a_m4_p] #month to p
+    month_scalar_s7pa1e1b1nwzida0e0b0xyg = price_adj_months_s7s9p4a1e1b1nwzida0e0b0xyg[:, 0, a_p4_p] #month to p
+    month_discount_s7pa1e1b1nwzida0e0b0xyg = price_adj_months_s7s9p4a1e1b1nwzida0e0b0xyg[:, 1, a_p4_p] #month to p
     ###Sale price grids for selected price percentile and the scalars for LW & quality score
     grid_price_s7s5s6 = sfun.f_saleprice(score_pricescalar_s7s5s6, weight_pricescalar_s7s5s6, dtype)
     r_vals['grid_price_s7s5s6'] = grid_price_s7s5s6

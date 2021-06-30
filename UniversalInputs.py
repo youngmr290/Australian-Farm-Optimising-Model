@@ -107,7 +107,7 @@ len_h1 = sheep_inp['i_husb_muster_infrastructurereq_h1h4'].shape[-1]
 len_h4 = sheep_inp['i_h4_len']
 len_h6 = sheep_inp['i_husb_muster_requisites_prob_h6h4'].shape[-1]
 len_l2 = sheep_inp['i_husb_muster_labourreq_l2h4'].shape[-1]
-len_m4 = sheep_inp['i_salep_months_priceadj_s7s9m4'].shape[-1]
+len_p4 = sheep_inp['i_salep_months_priceadj_s7s9p4'].shape[-1]
 len_s5 = sheep_inp['i_s5_len']
 len_s6 = sheep_inp['i_salep_score_scalar_s7s5s6'].shape[-1]
 len_s7 = sheep_inp['i_s7_len']
@@ -120,7 +120,7 @@ len_s9 = sheep_inp['i_s9_len']
 h4h1 = (len_h4, len_h1)
 h4h6 = (len_h4, len_h6)
 h4l2 = (len_h4, len_l2)
-s7s9m4 = (len_s7, len_s9, len_m4)
+s7s9p4 = (len_s7, len_s9, len_p4)
 s7s5s6 = (len_s7, len_s5, len_s6)
 s7s5 = (len_s7, len_s5)
 cb0 = (parameters_inp['i_cb0_len'], parameters_inp['i_cb0_len2'],-1)
@@ -132,7 +132,7 @@ cu2 = (parameters_inp['i_cu2_len'], parameters_inp['i_cu2_len2'],-1)
 cx = (parameters_inp['i_cx_len'], parameters_inp['i_cx_len2'],-1)
 
 ###stock
-sheep_inp['i_salep_months_priceadj_s7s9m4'] = np.reshape(sheep_inp['i_salep_months_priceadj_s7s9m4'], s7s9m4)
+sheep_inp['i_salep_months_priceadj_s7s9p4'] = np.reshape(sheep_inp['i_salep_months_priceadj_s7s9p4'], s7s9p4)
 sheep_inp['i_salep_score_scalar_s7s5s6'] = np.reshape(sheep_inp['i_salep_score_scalar_s7s5s6'], s7s5s6)
 sheep_inp['i_salep_weight_scalar_s7s5s6'] = np.reshape(sheep_inp['i_salep_weight_scalar_s7s5s6'], s7s5s6)
 sheep_inp['i_salep_weight_range_s7s5'] = np.reshape(sheep_inp['i_salep_weight_range_s7s5'], s7s5)
@@ -224,7 +224,7 @@ def universal_inp_sa():
     sheep['i_husb_operations_contract_cost_h2'] = fun.f_sa(sheep['i_husb_operations_contract_cost_h2'],sen.sam['husb_cost_h2'])
     sheep['i_husb_operations_muster_propn_h2'] = fun.f_sa(sheep['i_husb_operations_muster_propn_h2'], sen.sam['husb_mustering_h2'])
     sheep['i_husb_operations_labourreq_l2h2'] = fun.f_sa(sheep['i_husb_operations_labourreq_l2h2'],sen.sam['husb_labour_l2h2'])
-    sheep['i_salep_months_priceadj_s7s9m4'] = fun.f_sa(sheep['i_salep_months_priceadj_s7s9m4'],sen.sam['salep_month_adjust_s7s9m4'])
+    sheep['i_salep_months_priceadj_s7s9p4'] = fun.f_sa(sheep['i_salep_months_priceadj_s7s9p4'],sen.sam['salep_month_adjust_s7s9p4'])
     ###SAP
     ###SAA
     sheep['i_husb_operations_contract_cost_h2'] = fun.f_sa(sheep['i_husb_operations_contract_cost_h2'],sen.saa['husb_cost_h2'], 2)

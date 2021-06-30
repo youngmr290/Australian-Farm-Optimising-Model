@@ -53,7 +53,7 @@ sam['grn_dmd_senesce_f','annual']       = np.ones((len(per.f_feed_periods()) - 1
 ##livestock
 sam['woolp_mpg'] = 1.0                      # sa multiplier for wool price at std micron
 sam['salep_max'] = 1.0                      #max sale price in grid
-sam['salep_month_adjust_s7s9m4'] = np.ones(uinp.sheep['i_salep_months_priceadj_s7s9m4'].shape, dtype=np.float64)      #monthly sale price
+sam['salep_month_adjust_s7s9p4'] = np.ones(uinp.sheep['i_salep_months_priceadj_s7s9p4'].shape, dtype=np.float64)      #monthly sale price
 sam['kg'] = 1.0                             #energy efficiency of adults (zf2==1)
 sam['mr'] = 1.0                             #Maintenance requirement of adults (zf2==1)
 sam['pi'] = 1.0                             #Potential intake of adults (zf2==1)

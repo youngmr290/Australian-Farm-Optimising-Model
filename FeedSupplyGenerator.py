@@ -173,7 +173,7 @@ def feed_generator():
 #    i_season_propn_z = fun.f_expand(np.ones_like(pinp.general['i_season_propn_z']),z_pos)
 #    season_propn_zida0e0b0xyg = pinp.f_seasonal_inp(i_season_propn_z,numpy=True,axis=z_pos)
     ##wind speed
-#    ws_m4a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_ws_m4'],p_pos)
+#    ws_p4a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_ws_p4'],p_pos)
     ##expected stocking density
 #    density_p6a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_density_p6z'],z_pos,source=0,dest=-1,
 #                                                  left_pos2=p_pos, right_pos2=z_pos)  # p6 axis converted to p axis later (association section)
@@ -181,16 +181,16 @@ def feed_generator():
     ##nutrition adjustment for expected stocking density
 #    density_nwzida0e0b0xyg1 = fun.f_expand(sinp.stock['i_density_n1'],n_pos)
 #    density_nwzida0e0b0xyg3 = fun.f_expand(sinp.stock['i_density_n3'],n_pos)
-    ##Calculation of rainfall distribution across the week - i_rain_distribution_m4m1 = how much rain falls on each day of the week sorted in order of quantity of rain. SO the most rain falls on the day with the highest rainfall.
-    rain_m4a1e1b1nwzida0e0b0xygm1 = fun.f_expand(
-        pinp.sheep['i_rain_m4'][...,na] * pinp.sheep['i_rain_distribution_m4m1'] * (7 / 30.4),p_pos - 1,
+    ##Calculation of rainfall distribution across the week - i_rain_distribution_p4m1 = how much rain falls on each day of the week sorted in order of quantity of rain. SO the most rain falls on the day with the highest rainfall.
+    rain_p4a1e1b1nwzida0e0b0xygm1 = fun.f_expand(
+        pinp.sheep['i_rain_p4'][...,na] * pinp.sheep['i_rain_distribution_p4m1'] * (7 / 30.4),p_pos - 1,
         right_pos=-1)  # -1 because p is -16 when m1 axis is included
     ##Mean daily temperature
-    temp_ave_m4a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_temp_ave_m4'],p_pos)
+    temp_ave_p4a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_temp_ave_p4'],p_pos)
     ##Mean daily maximum temperature
-    temp_max_m4a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_temp_max_m4'],p_pos)
+    temp_max_p4a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_temp_max_p4'],p_pos)
     ##Mean daily minimum temperature
-    temp_min_m4a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_temp_min_m4'],p_pos)
+    temp_min_p4a1e1b1nwzida0e0b0xyg = fun.f_expand(pinp.sheep['i_temp_min_p4'],p_pos)
     ##latitude
 
 
@@ -212,7 +212,7 @@ def feed_generator():
 
 
     ##month of each period (0 - 11 not 1 -12 because this is association array)
-    a_m4_p = date_start_p.astype('datetime64[M]').astype(int) % 12
+    a_p4_p = date_start_p.astype('datetime64[M]').astype(int) % 12
 
 
     ############################
@@ -234,10 +234,10 @@ def feed_generator():
     paststd_hf_pa1e1b1j0wzida0e0b0xyg = paststd_hf_p6a1e1b1j0wzida0e0b0xyg1
 
     ##weather
-    rain_pa1e1b1nwzida0e0b0xygm1 = rain_m4a1e1b1nwzida0e0b0xygm1[a_m4_p]
-    temp_ave_pa1e1b1nwzida0e0b0xyg= temp_ave_m4a1e1b1nwzida0e0b0xyg[a_m4_p]
-    temp_max_pa1e1b1nwzida0e0b0xyg= temp_max_m4a1e1b1nwzida0e0b0xyg[a_m4_p]
-    temp_min_pa1e1b1nwzida0e0b0xyg= temp_min_m4a1e1b1nwzida0e0b0xyg[a_m4_p]
+    rain_pa1e1b1nwzida0e0b0xygm1 = rain_p4a1e1b1nwzida0e0b0xygm1[a_p4_p]
+    temp_ave_pa1e1b1nwzida0e0b0xyg= temp_ave_p4a1e1b1nwzida0e0b0xyg[a_p4_p]
+    temp_max_pa1e1b1nwzida0e0b0xyg= temp_max_p4a1e1b1nwzida0e0b0xyg[a_p4_p]
+    temp_min_pa1e1b1nwzida0e0b0xyg= temp_min_p4a1e1b1nwzida0e0b0xyg[a_p4_p]
 
 
     ###########################
