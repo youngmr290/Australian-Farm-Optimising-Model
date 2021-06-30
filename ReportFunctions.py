@@ -667,10 +667,10 @@ def f_pasture_reshape(lp_vars, r_vals):
     pas_vars['keys_fp6lz'] = [keys_f, keys_p6, keys_l, keys_z]
 
     ##shapes
-    fgop6lzt = keys_f, len_g, len_o, len_p6, len_l, len_z, len_t
-    fdp6zt = keys_f, len_d, len_p6, len_z, len_t
+    fgop6lzt = len_f, len_g, len_o, len_p6, len_l, len_z, len_t
+    fdp6zt = len_f, len_d, len_p6, len_z, len_t
     dp6zt = len_d, len_p6, len_z, len_t
-    fp6lz = keys_f, len_p6, len_l, len_z
+    fp6lz = len_f, len_p6, len_l, len_z
 
     ##reshape green pasture hectare variable
     pas_vars['greenpas_ha_fgop6lzt'] = f_vars2np(lp_vars, 'v_greenpas_ha', fgop6lzt, keys_z, z_pos=-2)
