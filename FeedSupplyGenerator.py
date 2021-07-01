@@ -106,7 +106,7 @@ def feed_generator():
     ### Create feedsupply             #
     ###################################
 
-    # create a feed supply between 0 and 3 in 0.01 increments across the w axis.
+    # create a feed supply between 0 and 3 in 0.001 increments across the w axis.
     feedsupply = index_wzida0e0b0xyg / 1000 #  + index_nwzida0e0b0xyg
     ## make the last entry 4, which is ad lib supplement in confinement
     feedsupply[-1] = 4
