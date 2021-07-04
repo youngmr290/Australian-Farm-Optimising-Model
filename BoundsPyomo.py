@@ -104,7 +104,7 @@ def boundarypyomo_local(params, model):
             ###build array for the axes of the specified slices
             dams_lowbound_tvwg = np.zeros((len(model.s_sale_dams), len(model.s_dvp_dams), len(model.s_lw_dams), len(model.s_groups_dams)))
             ###set the bound
-            dams_lowbound_tvwg[-1, 4:14, 0, -1] = 5  #min of 50 bbt in t3
+            dams_lowbound_tvwg[-1, 4:14, 0, -1] = 50  #min of 50 bbt in t3
             # dams_lowbound_tvwg[-1, 0,0,0] = 758 #min of 50 bbt in t3
             # dams_lowbound_tvwg[-1, 0,1,0] = 758  #min of 50 bbt in t3
             # dams_lowbound_tvwg[-1, 0,2,0] = 7.8 #min of 50 bbt in t3

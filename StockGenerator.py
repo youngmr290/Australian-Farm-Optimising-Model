@@ -4463,7 +4463,7 @@ def generator(params,r_vals,nv,plots = False):
         sfd_ltwadj_a1e1b1nwzida0e0b0xyg3 = temporary * sen.sam['LTW_offs']
 
     postp_start=time.time()
-    print('generator loops :', postp_start - generator_start)
+    print(f'completed generator loops: {postp_start - generator_start}')
 
 
     ## Call Steve graphing routine here if Generator is throwing an error in the post processing.
@@ -7121,41 +7121,43 @@ def generator(params,r_vals,nv,plots = False):
 
     r_vals['sire_keys_g0'] = [keys_g0]
     r_vals['sire_keys_p6fg0'] = [keys_p6, keys_f, keys_g0]
-    r_vals['dams_keys_k2tvanwziy1g1'] = [keys_k2, keys_t1, keys_v1, keys_a, keys_n1, keys_lw1, keys_z, keys_i,
-                                             keys_y1, keys_g1]
-    r_vals['dams_keys_k2ctvanwziy1g1'] = [keys_k2, keys_c, keys_t1, keys_v1, keys_a, keys_n1, keys_lw1, keys_z, keys_i,
-                                             keys_y1, keys_g1]
-    r_vals['dams_keys_k2tvaeb9nwziy1g1'] = [keys_k2, keys_t1, keys_v1, keys_a, keys_e, keys_b9, keys_n1, keys_lw1, keys_z, keys_i,
-                                             keys_y1, keys_g1]
-    r_vals['dams_keys_k2tvaebnwziy1g1'] = [keys_k2, keys_t1, keys_v1, keys_a, keys_e, keys_b, keys_n1, keys_lw1, keys_z, keys_i,
-                                             keys_y1, keys_g1]
-    r_vals['dams_keys_k2tvpanwziy1g1'] = [keys_k2, keys_t1, keys_v1, keys_p, keys_a, keys_n1, keys_lw1, keys_z, keys_i,
-                                             keys_y1, keys_g1]
-    r_vals['dams_keys_k2tvpaebnwziy1g1'] = [keys_k2, keys_t1, keys_v1, keys_p, keys_a, keys_e, keys_b, keys_n1, keys_lw1, keys_z, keys_i,
-                                             keys_y1, keys_g1]
-    r_vals['dams_keys_k2p6ftvanwziy1g1'] = [keys_k2, keys_p6, keys_f, keys_t1, keys_v1, keys_a, keys_n1, keys_lw1,
-                                                keys_z, keys_i, keys_y1, keys_g1]
-    r_vals['dams_keys_paebnwziy1g1'] = [keys_p, keys_a, keys_e, keys_b, keys_n1, keys_lw1, keys_z, keys_i, keys_y1, keys_g1]
-
+    r_vals['dams_keys_k2tvanwziy1g1'] = [keys_k2, keys_t1, keys_v1, keys_a, keys_n1, keys_lw1
+                                             , keys_z, keys_i, keys_y1, keys_g1]
+    r_vals['dams_keys_k2ctvanwziy1g1'] = [keys_k2, keys_c, keys_t1, keys_v1, keys_a, keys_n1, keys_lw1
+                                             , keys_z, keys_i, keys_y1, keys_g1]
+    r_vals['dams_keys_k2tvaeb9nwziy1g1'] = [keys_k2, keys_t1, keys_v1, keys_a, keys_e, keys_b9, keys_n1, keys_lw1
+                                             , keys_z, keys_i, keys_y1, keys_g1]
+    r_vals['dams_keys_k2tvaebnwziy1g1'] = [keys_k2, keys_t1, keys_v1, keys_a, keys_e, keys_b, keys_n1, keys_lw1
+                                             , keys_z, keys_i, keys_y1, keys_g1]
+    r_vals['dams_keys_k2tvpanwziy1g1'] = [keys_k2, keys_t1, keys_v1, keys_p, keys_a, keys_n1, keys_lw1
+                                            , keys_z, keys_i, keys_y1, keys_g1]
+    r_vals['dams_keys_k2tvpaebnwziy1g1'] = [keys_k2, keys_t1, keys_v1, keys_p, keys_a, keys_e, keys_b, keys_n1, keys_lw1
+                                            , keys_z, keys_i, keys_y1, keys_g1]
+    r_vals['dams_keys_k2p6ftvanwziy1g1'] = [keys_k2, keys_p6, keys_f, keys_t1, keys_v1, keys_a, keys_n1, keys_lw1
+                                            , keys_z, keys_i, keys_y1, keys_g1]
+    r_vals['dams_keys_paebnwziy1g1'] = [keys_p, keys_a, keys_e, keys_b, keys_n1, keys_lw1
+                                            , keys_z, keys_i, keys_y1, keys_g1]
     r_vals['yatf_keys_k2tvpaebnwzixy1g1'] = [keys_k2, keys_t1, keys_v1, keys_p, keys_a, keys_e, keys_b, keys_n1, keys_lw1
-                                              , keys_z, keys_i, keys_x, keys_y1, keys_g1]
+                                            , keys_z, keys_i, keys_x, keys_y1, keys_g1]
 
-    r_vals['prog_keys_k3k5twzia0xg2'] = [keys_k3, keys_k5, keys_t2, keys_lw_prog, keys_z, keys_i, keys_a, keys_x, keys_g2]
-    r_vals['prog_keys_k3k5twzida0e0b0xyg2'] = [keys_k3, keys_k5, keys_t2, keys_lw_prog, keys_z, keys_i, keys_d, keys_a, keys_e0, keys_b0, keys_x, keys_y3, keys_g2]
+    r_vals['prog_keys_k3k5twzia0xg2'] = [keys_k3, keys_k5, keys_t2, keys_lw_prog, keys_z, keys_i
+                                            , keys_a, keys_x, keys_g2]
+    r_vals['prog_keys_k3k5twzida0e0b0xyg2'] = [keys_k3, keys_k5, keys_t2, keys_lw_prog, keys_z, keys_i, keys_d
+                                            , keys_a, keys_e0, keys_b0, keys_x, keys_y3, keys_g2]
 
-    r_vals['offs_keys_k3k5tvnwziaxyg3'] = [keys_k3, keys_k5, keys_t3, keys_v3, keys_n3, keys_lw3, keys_z, keys_i,
-                                               keys_a, keys_x, keys_y3, keys_g3]
-    r_vals['offs_keys_k3k5ctvnwziaxyg3'] = [keys_k3, keys_k5, keys_c, keys_t3, keys_v3, keys_n3, keys_lw3, keys_z, keys_i,
-                                               keys_a, keys_x, keys_y3, keys_g3]
-    r_vals['offs_keys_k3k5tvpnwziaxyg3'] = [keys_k3, keys_k5, keys_t3, keys_v3, keys_p3, keys_n3, keys_lw3, keys_z, keys_i,
-                                               keys_a, keys_x, keys_y3, keys_g3]
-    r_vals['offs_keys_k3k5tvpnwzidaebxyg3'] = [keys_k3, keys_k5, keys_t3, keys_v3, keys_p3, keys_n3, keys_lw3, keys_z, keys_i,
-                                               keys_d, keys_a, keys_e0, keys_b0, keys_x, keys_y3, keys_g3]
-    r_vals['offs_keys_k3k5p6ftvnwziaxyg3'] = [keys_k3, keys_k5, keys_p6, keys_f, keys_t3, keys_v3, keys_n3,
-                                                  keys_lw3, keys_z, keys_i, keys_a, keys_x, keys_y3, keys_g3]
+    r_vals['offs_keys_k3k5tvnwziaxyg3'] = [keys_k3, keys_k5, keys_t3, keys_v3, keys_n3, keys_lw3, keys_z, keys_i
+                                            , keys_a, keys_x, keys_y3, keys_g3]
+    r_vals['offs_keys_k3k5ctvnwziaxyg3'] = [keys_k3, keys_k5, keys_c, keys_t3, keys_v3, keys_n3, keys_lw3, keys_z, keys_i
+                                            , keys_a, keys_x, keys_y3, keys_g3]
+    r_vals['offs_keys_k3k5tvpnwziaxyg3'] = [keys_k3, keys_k5, keys_t3, keys_v3, keys_p3, keys_n3, keys_lw3, keys_z
+                                            , keys_i, keys_a, keys_x, keys_y3, keys_g3]
+    r_vals['offs_keys_k3k5tvpnwzidaebxyg3'] = [keys_k3, keys_k5, keys_t3, keys_v3, keys_p3, keys_n3, keys_lw3, keys_z
+                                            , keys_i, keys_d, keys_a, keys_e0, keys_b0, keys_x, keys_y3, keys_g3]
+    r_vals['offs_keys_k3k5p6ftvnwziaxyg3'] = [keys_k3, keys_k5, keys_p6, keys_f, keys_t3, keys_v3, keys_n3
+                                            , keys_lw3, keys_z, keys_i, keys_a, keys_x, keys_y3, keys_g3]
 
-    r_vals['offs_keys_pnwzidaebxyg3'] = [keys_p3, keys_n3, keys_lw3, keys_z, keys_i, keys_d, keys_a, keys_e0, keys_b0,
-                                         keys_x, keys_y3, keys_g3]
+    r_vals['offs_keys_pnwzidaebxyg3'] = [keys_p3, keys_n3, keys_lw3, keys_z, keys_i, keys_d, keys_a, keys_e0, keys_b0
+                                            , keys_x, keys_y3, keys_g3]
 
     ####std
     zg0_shape = len_z, len_g0
@@ -7164,6 +7166,7 @@ def generator(params,r_vals,nv,plots = False):
     k3k5tvnwziaxyg3_shape = len_k3, len_k5, len_t3, len_v3, len_n3, len_w3, len_z, len_i, len_a0, len_x, len_y3, len_g3
 
     ####kv with a singleton t axis (so that it can be divided by numbers with a t axis - but t is not in the name)
+    #todo 'singleton t' doesn't seem to be the case
     k2va1nwziyg1_shape = len_k2, len_v1, len_a1, len_n1, len_w1, len_z, len_i, len_y1, len_g1
     k3k5vnwziaxyg3_shape = len_k3, len_k5, len_v3, len_n3, len_w3, len_z, len_i, len_a0, len_x, len_y3, len_g3
 

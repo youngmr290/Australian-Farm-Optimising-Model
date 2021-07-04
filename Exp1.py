@@ -122,7 +122,8 @@ def exp(row):  # called with command: pool.map(exp, dataset)
 
     ##get trial name - used for outputs
     trial_name = exp_data.index[row][3]
-    print("\n", time.ctime()," : Starting trial %s" %(trial_name))
+    trial_description = f'{dataset.index(row)+1} {trial_name}'
+    print("\n", time.ctime()," : Starting trial %s" %(trial_description))
 
     ##updaye sensitivity values
     fun.f_update_sen(row,exp_data,sen.sam,sen.saa,sen.sap,sen.sar,sen.sat,sen.sav)
@@ -174,7 +175,7 @@ def exp(row):  # called with command: pool.map(exp, dataset)
     stubpy.stub_precalcs(params['stub'],r_vals['stub'], nv) #stub must be after stock because it uses nv dict which is populated in stock.py
     paspy.paspyomo_precalcs(params['pas'],r_vals['pas'], nv) #pas must be after stock because it uses nv dict which is populated in stock.py
     precalc_end = time.time()
-    print('precalcs: ', precalc_end - precalc_start)
+    print(trial_description, 'precalcs total: ', precalc_end - precalc_start)
 
     ##does pyomo need to be run? In exp1 pyomo is always run because creating params file take up lots of time, RAM and disc space
     run_pyomo_params = True
@@ -200,9 +201,9 @@ def exp(row):  # called with command: pool.map(exp, dataset)
         ###bounds-this must be done last because it uses sets built in some of the other modules
         bndpy.boundarypyomo_local(params, model)
         pyomocalc_end = time.time()
-        print('localpyomo: ', pyomocalc_end - pyomocalc_start)
+        print(trial_description, 'localpyomo: ', pyomocalc_end - pyomocalc_start)
         obj = core.coremodel_all(params, trial_name, model)
-        print('corepyomo: ',time.time() - pyomocalc_end)
+        print(trial_description, 'corepyomo: ',time.time() - pyomocalc_end)
 
         if pinp.general['steady_state'] or np.count_nonzero(pinp.general['i_mask_z'])==1:
             ##This writes variable summary each iteration with generic file name - it is overwritten each iteration and is created so the run progress can be monitored
@@ -246,7 +247,6 @@ def exp(row):  # called with command: pool.map(exp, dataset)
                             for index in c:
                                 print("      ", index, model.dual[c[index]], file=f)
 
-            #last step is to print the time for the current trial to run
             season = pinp.f_keys_z()[0]
             lp_vars = {}
             variables=model.component_objects(pe.Var, active=True)
@@ -295,16 +295,26 @@ def exp(row):  # called with command: pool.map(exp, dataset)
     with open('pkl/pkl_r_vals_{0}.pkl'.format(trial_name),"wb") as f:
         pkl.dump(r_vals,f,protocol=pkl.HIGHEST_PROTOCOL)
 
-    ##determine expected time to completion - trials left multiplied by average time per trial &time for current loop
+    #last step is to print the time for the current trial to run
     total_batches = math.ceil(len(dataset) / n_processes)
-    current_batch = math.ceil((dataset.index(row)+1) / n_processes) #add 1 because python starts at 0
-    remaining_batches = total_batches - current_batch
-    time_taken = time.time() - start_time1
-    batch_time = time_taken / current_batch
-    time_remaining = remaining_batches * batch_time
-    end_time = time.time()
-    print("total time taken this loop: ", end_time - start_time)
-    print('Time remaining: %s' %time_remaining)
+    # ##determine expected time to completion - trials left multiplied by average time per trial &time for current loop
+    # ##this approach would work well if the trials were executed in order.
+    # current_batch = math.ceil((dataset.index(row)+1) / n_processes) #add 1 because python starts at 0
+    # remaining_batches = total_batches - current_batch
+    # time_taken = time.time() - start_time1
+    # batch_time = time_taken / current_batch
+    # time_remaining = remaining_batches * batch_time
+    # end_time = time.time()
+
+    ## determine expected time to completion - total time is time this loop multiplied by the number of batches
+    loop_time = time.time() - start_time
+    ## finish time if all batches take the same time as this loop.
+    ## This approach underestimates the final time if this loop was quicker than average
+    ## n
+    finish_time_expected = start_time1 + loop_time * total_batches
+    time_remaining = finish_time_expected - time.time()
+    print(f'{trial_description} total time taken this loop: {loop_time}')
+    print(f'{trial_description} Time remaining: {time_remaining}')
 
     return row
 
@@ -325,7 +335,7 @@ def main():
 if __name__ == '__main__':
     main() #returns a list is the same order of exp
     end=time.time()
-    print('total time',end-start)
+    print('Experiment completed, total time',end-start)
 
 
 

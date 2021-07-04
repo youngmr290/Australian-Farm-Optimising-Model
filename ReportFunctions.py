@@ -725,7 +725,7 @@ def f_stock_cash_summary(lp_vars, r_vals):
     ##sale income
     salevalue_czg0 = r_vals['stock']['salevalue_czg0'] * sire_numbers_zg0
     salevalue_k2ctva1nwziyg1 = r_vals['stock']['salevalue_k2ctva1nwziyg1'] * dams_numbers_k2tvanwziy1g1[:, na, ...]
-    salevalue_k3k5ctwzia0xg2 = r_vals['stock']['salevalue_k3k5ctwzia0xg2'] * prog_numbers_k3k5twzia0xg2[:, na,
+    salevalue_k3k5ctwzia0xg2 = r_vals['stock']['salevalue_k3k5ctwzia0xg2'] * prog_numbers_k3k5twzia0xg2[:, :, na,
                                                                                      ...]
     salevalue_k3k5ctvnwziaxyg3 = r_vals['stock']['salevalue_k3k5ctvnwziaxyg3'] * offs_numbers_k3k5tvnwziaxyg3[:, :, na, ...]
 

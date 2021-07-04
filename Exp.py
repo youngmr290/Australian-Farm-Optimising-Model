@@ -287,16 +287,15 @@ for row in range(len(exp_data)):
 
     ##determine expected time to completion - trials left multiplied by average time per trial &time for current loop
     trials_to_go = total_trials - run
-    time_taken= time.time()
-    average_time = (time_taken- start_time1)/run
+    average_time = (time.time() - start_time1) / run   #time since the start of experiment
     remaining = trials_to_go * average_time
-    print("total time taken this loop: ", time_taken - start_time)
-    print('Time remaining: %s' %remaining)
+    print(f'time taken this loop: {time.time() - start_time}')   #time since start of this loop
+    print(f'Time remaining: {remaining}')
 
 end_time1 = time.time()
-print('total trials completed: ', run)
+print(f'total trials completed: {run}')
 try:
-    print("average time taken for each loop: ", (end_time1 - start_time1)/run)
+    print(f'average time taken for each loop: {(end_time1 - start_time1) / run}') #average time since start of experiment
 except ZeroDivisionError: pass
 
 
