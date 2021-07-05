@@ -57,8 +57,6 @@ try:
 except IndexError:  # in case no arg passed to python
     maximum_processes = 1  # available memory / value determined by size of the model being run (~5GB for the small model)
 
-start_time1 = time.time()
-
 
     
 #########################
@@ -104,6 +102,9 @@ dataset = list(np.flatnonzero(np.nan_to_num(np.array(exp_data.index.get_level_va
 ## number of agents (processes) should be min of the num of cpus, number of trials or the user specified limit due to memory capacity
 n_processes = min(multiprocessing.cpu_count(),len(dataset),maximum_processes)
 
+## set the start time at the beginning of the multiprocessing loops
+start_time1 = time.time()
+
 
 #########################
 #Exp loop               #
@@ -125,7 +126,7 @@ def exp(row):  # called with command: pool.map(exp, dataset)
     trial_description = f'{dataset.index(row)+1} {trial_name}'
     print(f'\n{trial_description}, Starting trial at: {time.ctime()}')
 
-    ##updaye sensitivity values
+    ##update sensitivity values
     fun.f_update_sen(row,exp_data,sen.sam,sen.saa,sen.sap,sen.sar,sen.sat,sen.sav)
 
     ##call sa functions - assigns sa variables to relevant inputs
@@ -296,23 +297,23 @@ def exp(row):  # called with command: pool.map(exp, dataset)
         pkl.dump(r_vals,f,protocol=pkl.HIGHEST_PROTOCOL)
 
     #last step is to print the time for the current trial to run
+    ##determine expected time to completion - trials left multiplied by average time per trial
+    ##this approach works well if chunksize = 1
     total_batches = math.ceil(len(dataset) / n_processes)
-    # ##determine expected time to completion - trials left multiplied by average time per trial &time for current loop
-    # ##this approach would work well if the trials were executed in order.
-    # current_batch = math.ceil((dataset.index(row)+1) / n_processes) #add 1 because python starts at 0
-    # remaining_batches = total_batches - current_batch
-    # time_taken = time.time() - start_time1
-    # batch_time = time_taken / current_batch
-    # time_remaining = remaining_batches * batch_time
-    # end_time = time.time()
+    current_batch = math.ceil((dataset.index(row)+1) / n_processes) #add 1 because python starts at 0
+    remaining_batches = total_batches - current_batch
+    time_taken = time.time() - start_time1   #start of the multiprocessing loops
+    batch_time = time_taken / current_batch
+    time_remaining = remaining_batches * batch_time
+    finish_time_expected = time.time() + time_remaining
 
-    ## determine expected time to completion - total time is time this loop multiplied by the number of batches
+    # ## determine expected time to completion - total time is time this loop multiplied by the number of batches
     loop_time = time.time() - start_time
-    ## finish time if all batches take the same time as this loop.
-    ## This approach underestimates the final time if this loop was quicker than average
-    ## not accurate if the experiment has trials with different model specifications (scan, F or N)
-    finish_time_expected = start_time1 + loop_time * total_batches
-    # time_remaining = finish_time_expected - time.time()
+    # ## finish time if all batches take the same time as this loop.
+    # ## This approach underestimates the final time if this loop was quicker than average
+    # ## not accurate if the experiment has trials with different model specifications (scan, F or N)
+    # finish_time_expected = start_time1 + loop_time * total_batches
+
     print(f'{trial_description}, total time taken this loop: {loop_time:.2f}')
     print(f'{trial_description}, Expected finish time: \033[1m{time.ctime(finish_time_expected)}\033[0m at {time.ctime()}')
 
@@ -328,7 +329,9 @@ def main():
     print(f'Exp.xls last saved: {datetime.fromtimestamp(round(os.path.getmtime("exp.xlsx")))}')
     ##start multiprocessing
     with multiprocessing.Pool(processes=n_processes) as pool:
-        trials_successfully_run = pool.map(exp, dataset)
+        ##size 1 has similar speed even for N11 model and allows better reporting (will be even better on a larger model)
+        ##a drawback of chunksize = 1 is that if there is an error in the multiprocessed code then every trial is still processed
+        trials_successfully_run = pool.map(exp, dataset, chunksize = 1)
 
     return
 
