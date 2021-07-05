@@ -111,7 +111,7 @@ for row in range(len(exp_data)):
     ##get trial name - used for outputs
     trial_name = exp_data.index[row][3]
     trial_description = f'{run} {trial_name}'
-    print('\n {trial_description} Starting trial at: {time.ctime()}')
+    print(f'\n{trial_description}, Starting trial at: {time.ctime()}')
     if run_pyomo != True:
         print("\n **** Pyomo is turned off... are you sure? ****\n")
 
@@ -167,7 +167,7 @@ for row in range(len(exp_data)):
     stubpy.stub_precalcs(params['stub'],r_vals['stub'], nv) #stub must be after stock because it uses nv dict which is populated in stock.py
     paspy.paspyomo_precalcs(params['pas'],r_vals['pas'], nv) #pas must be after stock because it uses nv dict which is populated in stock.py
     precalc_end = time.time()
-    print(f'{trial_description} total time for precalcs: {precalc_end - precalc_start} finished at {time.ctime()}')
+    print(f'{trial_description}, total time for precalcs: {precalc_end - precalc_start:.2f} finished at {time.ctime()}')
 
     
     ##determine if pyomo should run, note if pyomo doesn't run there will be no full solution (they are the same as before so no need)
@@ -192,9 +192,9 @@ for row in range(len(exp_data)):
         bndpy.boundarypyomo_local(params, model)
 
         pyomocalc_end = time.time()
-        print(f'{trial_description} time for localpyomo: {pyomocalc_end - pyomocalc_start} finished at {time.ctime()}')
+        print(f'{trial_description}, time for localpyomo: {pyomocalc_end - pyomocalc_start:.2f} finished at {time.ctime()}')
         obj = core.coremodel_all(params, trial_name, model)
-        print(f'{trial_description} time for corepyomo: {time.time() - pyomocalc_end} finished at {time.ctime()}')
+        print(f'{trial_description}, time for corepyomo: {time.time() - pyomocalc_end:.2f} finished at {time.ctime()}')
 
         if pinp.general['steady_state'] or np.count_nonzero(pinp.general['i_mask_z'])==1:
             ##This writes variable summary each iteration with generic file name - it is overwritten each iteration and is created so the run progress can be monitored
@@ -292,13 +292,13 @@ for row in range(len(exp_data)):
     average_time = (time.time() - start_time1) / run   #time since the start of experiment
     remaining = trials_to_go * average_time
     finish_time_expected = time.time() + remaining
-    print(f'{trial_description} total time taken this loop: {time.time() - start_time}')   #time since start of this loop
-    print(f'{trial_description} Expected finish time: {finish_time_expected} at {time.ctime()}')
+    print(f'{trial_description}, total time taken this loop: {time.time() - start_time:.2f}')   #time since start of this loop
+    print(f'{trial_description}, Expected finish time: \033[1m{time.ctime(finish_time_expected)}\033[0m (at {time.ctime()})')
 
 end = time.time()
 print(f'Experiment completed at: {time.ctime()}, total trials completed: {run}')
 try:
-    print(f'average time taken for each loop: {(end - start) / run}') #average time since start of experiment
+    print(f'average time taken for each loop: {(end - start) / run:.2f}') #average time since start of experiment
 except ZeroDivisionError: pass
 
 
