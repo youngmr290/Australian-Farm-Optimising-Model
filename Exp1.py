@@ -22,8 +22,8 @@ import json
 import numpy as np
 
 #report the clock time that the experiment was started
-print("Experiment commenced at: ", time.ctime())
-start=time.time()
+print(f'Experiment commenced at: {time.ctime()}')
+start = time.time()
 
 import CreateModel as crtmod
 import BoundsPyomo as bndpy
@@ -123,7 +123,7 @@ def exp(row):  # called with command: pool.map(exp, dataset)
     ##get trial name - used for outputs
     trial_name = exp_data.index[row][3]
     trial_description = f'{dataset.index(row)+1} {trial_name}'
-    print("\n", time.ctime()," : Starting trial %s" %(trial_description))
+    print(f'\n {trial_description} Starting trial at: {time.ctime()}')
 
     ##updaye sensitivity values
     fun.f_update_sen(row,exp_data,sen.sam,sen.saa,sen.sap,sen.sar,sen.sat,sen.sav)
@@ -175,7 +175,7 @@ def exp(row):  # called with command: pool.map(exp, dataset)
     stubpy.stub_precalcs(params['stub'],r_vals['stub'], nv) #stub must be after stock because it uses nv dict which is populated in stock.py
     paspy.paspyomo_precalcs(params['pas'],r_vals['pas'], nv) #pas must be after stock because it uses nv dict which is populated in stock.py
     precalc_end = time.time()
-    print(trial_description, 'precalcs total: ', precalc_end - precalc_start)
+    print(f'{trial_description} total time for precalcs: {precalc_end - precalc_start} finished at {time.ctime()}')
 
     ##does pyomo need to be run? In exp1 pyomo is always run because creating params file take up lots of time, RAM and disc space
     run_pyomo_params = True
@@ -201,9 +201,9 @@ def exp(row):  # called with command: pool.map(exp, dataset)
         ###bounds-this must be done last because it uses sets built in some of the other modules
         bndpy.boundarypyomo_local(params, model)
         pyomocalc_end = time.time()
-        print(trial_description, 'localpyomo: ', pyomocalc_end - pyomocalc_start)
+        print(f'{trial_description} time for localpyomo: {pyomocalc_end - pyomocalc_start} finished at {time.ctime()}')
         obj = core.coremodel_all(params, trial_name, model)
-        print(trial_description, 'corepyomo: ',time.time() - pyomocalc_end)
+        print(f'{trial_description} time for corepyomo: {time.time() - pyomocalc_end} finished at {time.ctime()}')
 
         if pinp.general['steady_state'] or np.count_nonzero(pinp.general['i_mask_z'])==1:
             ##This writes variable summary each iteration with generic file name - it is overwritten each iteration and is created so the run progress can be monitored
@@ -310,11 +310,11 @@ def exp(row):  # called with command: pool.map(exp, dataset)
     loop_time = time.time() - start_time
     ## finish time if all batches take the same time as this loop.
     ## This approach underestimates the final time if this loop was quicker than average
-    ## n
+    ## not accurate if the experiment has trials with different model specifications (scan, F or N)
     finish_time_expected = start_time1 + loop_time * total_batches
-    time_remaining = finish_time_expected - time.time()
+    # time_remaining = finish_time_expected - time.time()
     print(f'{trial_description} total time taken this loop: {loop_time}')
-    print(f'{trial_description} Time remaining: {time_remaining}')
+    print(f'{trial_description} Expected finish time: {finish_time_expected} at {time.ctime()}')
 
     return row
 
@@ -322,10 +322,10 @@ def exp(row):  # called with command: pool.map(exp, dataset)
 #   using map it returns outputs in the order they go in ie in the order of the exp
 ##the result after the different processes are done is a list of dicts (because each iteration returns a dict and the multiprocess stuff returns a list)
 def main():
-    ##prints out start status - number of trials to run, date and time exp.xl was last saved and output summary
-    print('Number of trials to run: ',len(dataset))
-    print('Number of full solutions: ',sum((exp_data.index[row][1] == True) and (exp_data.index[row][0] == True) for row in range(len(exp_data))))
-    print('Exp.xls last saved: ',datetime.fromtimestamp(round(os.path.getmtime("exp.xlsx"))))
+    ##displays start status - number of trials to run, date and time exp.xl was last saved and output summary
+    print(f'Number of trials to run: {len(dataset)}')
+    print(f'Number of full solutions: {sum((exp_data.index[row][1] == True) and (exp_data.index[row][0] == True) for row in range(len(exp_data)))}')
+    print(f'Exp.xls last saved: {datetime.fromtimestamp(round(os.path.getmtime("exp.xlsx")))}')
     ##start multiprocessing
     with multiprocessing.Pool(processes=n_processes) as pool:
         trials_successfully_run = pool.map(exp, dataset)
@@ -333,13 +333,10 @@ def main():
     return
 
 if __name__ == '__main__':
-    main() #returns a list is the same order of exp
-    end=time.time()
-    print('Experiment completed, total time',end-start)
-
-
-
-
-
-
-
+    main() #returns a list of dicts in the order of exp
+    end = time.time()
+    print(f'Experiment completed at: {time.ctime()}, total time taken: {end - start}')
+    try:
+        print(f'average time taken for each loop: {(end - start) / len(dataset)}')  #average time since start of experiment
+    except ZeroDivisionError:
+        pass

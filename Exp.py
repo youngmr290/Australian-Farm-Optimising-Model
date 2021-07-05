@@ -21,7 +21,8 @@ import pickle as pkl
 # snapshots = []
 
 #report the clock time that the experiment was started
-print("Experiment commenced at: ", time.ctime())
+print(f'Experiment commenced at: {time.ctime()}')
+start = time.time()
 
 import CreateModel as crtmod
 import BoundsPyomo as bndpy
@@ -90,10 +91,10 @@ exp_data1 = fun.f_group_exp(exp_data1, exp_group_bool)
 
 
 ##print out number of trials to run
-total_trials=sum(exp_data.index[row][0] == True for row in range(len(exp_data)))
-print('Number of trials to run: ',total_trials)
-print('Number of full solutions: ',sum((exp_data.index[row][1] == True) and (exp_data.index[row][0] == True) for row in range(len(exp_data))))
-print('exp.xls last saved: ',datetime.fromtimestamp(round(os.path.getmtime("exp.xlsx"))))
+total_trials = sum(exp_data.index[row][0] == True for row in range(len(exp_data)))
+print(f'Number of trials to run: {total_trials}')
+print(f'Number of full solutions: {sum((exp_data.index[row][1] == True) and (exp_data.index[row][0] == True) for row in range(len(exp_data)))}')
+print(f'exp.xls last saved: {datetime.fromtimestamp(round(os.path.getmtime("exp.xlsx")))}')
 start_time1 = time.time()
 run=0 #counter to work out average time per loop
 for row in range(len(exp_data)):
@@ -109,7 +110,8 @@ for row in range(len(exp_data)):
 
     ##get trial name - used for outputs
     trial_name = exp_data.index[row][3]
-    print("\n", time.ctime()," : Starting trial %d, %s" %(run, trial_name))
+    trial_description = f'{run} {trial_name}'
+    print('\n {trial_description} Starting trial at: {time.ctime()}')
     if run_pyomo != True:
         print("\n **** Pyomo is turned off... are you sure? ****\n")
 
@@ -165,8 +167,8 @@ for row in range(len(exp_data)):
     stubpy.stub_precalcs(params['stub'],r_vals['stub'], nv) #stub must be after stock because it uses nv dict which is populated in stock.py
     paspy.paspyomo_precalcs(params['pas'],r_vals['pas'], nv) #pas must be after stock because it uses nv dict which is populated in stock.py
     precalc_end = time.time()
-    print('precalcs: ', precalc_end - precalc_start)
-    
+    print(f'{trial_description} total time for precalcs: {precalc_end - precalc_start} finished at {time.ctime()}')
+
     
     ##determine if pyomo should run, note if pyomo doesn't run there will be no full solution (they are the same as before so no need)
     if run_pyomo:
@@ -190,9 +192,9 @@ for row in range(len(exp_data)):
         bndpy.boundarypyomo_local(params, model)
 
         pyomocalc_end = time.time()
-        print('localpyomo: ', pyomocalc_end - pyomocalc_start)
+        print(f'{trial_description} time for localpyomo: {pyomocalc_end - pyomocalc_start} finished at {time.ctime()}')
         obj = core.coremodel_all(params, trial_name, model)
-        print('corepyomo: ',time.time() - pyomocalc_end)
+        print(f'{trial_description} time for corepyomo: {time.time() - pyomocalc_end} finished at {time.ctime()}')
 
         if pinp.general['steady_state'] or np.count_nonzero(pinp.general['i_mask_z'])==1:
             ##This writes variable summary each iteration with generic file name - it is overwritten each iteration and is created so the run progress can be monitored
@@ -289,13 +291,14 @@ for row in range(len(exp_data)):
     trials_to_go = total_trials - run
     average_time = (time.time() - start_time1) / run   #time since the start of experiment
     remaining = trials_to_go * average_time
-    print(f'time taken this loop: {time.time() - start_time}')   #time since start of this loop
-    print(f'Time remaining: {remaining}')
+    finish_time_expected = time.time() + remaining
+    print(f'{trial_description} total time taken this loop: {time.time() - start_time}')   #time since start of this loop
+    print(f'{trial_description} Expected finish time: {finish_time_expected} at {time.ctime()}')
 
-end_time1 = time.time()
-print(f'total trials completed: {run}')
+end = time.time()
+print(f'Experiment completed at: {time.ctime()}, total trials completed: {run}')
 try:
-    print(f'average time taken for each loop: {(end_time1 - start_time1) / run}') #average time since start of experiment
+    print(f'average time taken for each loop: {(end - start) / run}') #average time since start of experiment
 except ZeroDivisionError: pass
 
 
