@@ -50,9 +50,15 @@ import os
 import sys
 import multiprocessing
 import glob
+import time
 
 import ReportFunctions as rep
 import Functions as fun
+
+
+#report the clock time that the experiment was started
+print(f'Experiment commenced at: {time.ctime()}')
+start = time.time()
 
 
 ##read in excel that controls which reports to run and slice for the selected experiment.
@@ -1160,4 +1166,6 @@ if __name__ == '__main__':
     with multiprocessing.Pool(processes=agents) as pool:
         pool.starmap(f_report, args)
 
-    print("Reports successfully completed")
+    end = time.time()
+    # print("Reports successfully completed")
+    print(f'Reporting successfully completed at: {time.ctime()}, total time taken: {end - start:.2f}')
