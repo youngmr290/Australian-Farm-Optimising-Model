@@ -57,7 +57,7 @@ import Functions as fun
 
 
 #report the clock time that the experiment was started
-print(f'Experiment commenced at: {time.ctime()}')
+print(f'Reporting commenced at: {time.ctime()}')
 start = time.time()
 
 
