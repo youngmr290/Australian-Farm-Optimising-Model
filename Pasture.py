@@ -342,13 +342,21 @@ def f_pasture(params, r_vals, nv):
     mask_dryfeed_exists_next_p6zt = np.roll(mask_dryfeed_exists_p6zt, shift=-1, axis=0)   #dry feed exists in the following feed period
 
     ### calculate dry_decay_period (used in reseeding and green&dry)
-    ### dry_decay_daily is decay of dry foo at the start of the period that was transferred in from senescence in the previous period.
-    ### dry_decay_daily does not effect green feed that sceneses during the current period.
+    ### dry_decay_daily is decay of dry foo at the start of the period that was either
+    ### dry at the end of the last period or transferred in from senescence in the previous period.
+    ### dry_decay_daily does not effect green feed that senesces during the current period.
     dry_decay_daily_p6zt[...] = i_dry_decay_t
     for t in range(n_pasture_types):
         for z in range(n_season_types):
             dry_decay_daily_p6zt[0:i_dry_exists_zt[z,t], z, t] = 1  #couldn't do this without loops - advanced indexing doesnt appear to work when taking multiple slices
     dry_decay_period_p6zt[...] = 1 - (1 - dry_decay_daily_p6zt) ** length_fz[...,na]
+    ### allowance for the decay of dry feed in the days prior to being consumed
+    ### because only the feed at the end of period is decayed by dry_decay_period_p6zt
+    ### scales total removal to allow for an equal portion of the feed being grazed each day
+    removal_scalar_dry_decay_daily_p6zt = 1 / (1 - dry_decay_daily_p6zt)
+    removal_scalar_dry_decay_p6zt = ((1 - removal_scalar_dry_decay_daily_p6zt ** length_fz[..., na])
+                                     / (1 - removal_scalar_dry_decay_daily_p6zt)
+                                     / length_fz[..., na])
     ## dry, DM decline (high = low pools)
     ###dry transfer prov is the amount of dry feed that is transferred into the current period from the previous (1000 - decay)
     dry_transfer_prov_t_p6zt = 1000 * (1-dry_decay_period_p6zt) * mask_dryfeed_exists_next_p6zt #if no dry feed exists in the next period then we dont need the transfer prov DV.
@@ -457,8 +465,10 @@ def f_pasture(params, r_vals, nv):
         , mask_dryfeed_exists_p6zt, i_pasture_stage_p6z, nv_is_not_confinement_f, i_legume_zt, n_feed_pools)
     dry_volume_t_dp6zt = dry_volume_t_dp6zt / (1 + sen.sap['pi'])
 
-    ## dry, animal removal
-    dry_removal_t_p6zt  = 1000 * (1 + i_dry_trampling_p6t[:,na,:]) * mask_dryfeed_exists_p6zt #mask out consumption in periods where dry doesnt exist to remove the activity in the lp.
+    ## dry, animal removal, mask consumption in periods where dry doesnt exist to remove the decision variable in pyomo.
+    dry_removal_t_p6zt  = (1000 * (1 + i_dry_trampling_p6t[:,na,:])
+                           * removal_scalar_dry_decay_p6zt
+                           * mask_dryfeed_exists_p6zt)
 
     ## Senescence of green feed into the dry pool.
     senesce_grnha_dgop6lzt = pfun.f1_senescence(senesce_period_grnha_gop6lzt, senesce_eos_grnha_gop6lzt, dry_decay_period_p6zt
