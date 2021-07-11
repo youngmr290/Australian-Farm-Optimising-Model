@@ -315,7 +315,11 @@ def exp(row):  # called with command: pool.map(exp, dataset)
     # finish_time_expected = start_time1 + loop_time * total_batches
 
     print(f'{trial_description}, total time taken this loop: {loop_time:.2f}')
-    print(f'{trial_description}, Expected finish time: \033[1m{time.ctime(finish_time_expected)}\033[0m at {time.ctime()}')
+    message = f'{trial_description}, Expected finish time: \033[1m{time.ctime(finish_time_expected)}\033[0m at {time.ctime()}'
+    #replace message if this process is complete
+    if remaining_batches == 0:
+        message = f'{trial_description}, this process is complete'
+    print(message)
 
     return row
 
@@ -338,7 +342,7 @@ def main():
 if __name__ == '__main__':
     main() #returns a list of dicts in the order of exp
     end = time.time()
-    print(f'Experiment completed at: {time.ctime()}, total time taken: {end - start:.2f}')
+    print(f'\n\033[1mExperiment completed at:\033[0m {time.ctime()}, total time taken: {end - start:.2f}')
     try:
         print(f'average time taken for each loop: {(end - start) / len(dataset):.2f}')  #average time since start of experiment
     except ZeroDivisionError:
