@@ -963,7 +963,8 @@ def f_lwc_cs(cg, rc_start, mei, mem, mew, z1f, z2f, kg, rev_trait_value, mec = 0
     evg = cg[8, ...] - z1f * (cg[9, ...] - cg[10, ...] * (level - 1)) + z2f * cg[11, ...] * (rc_start - 1)
     ##Protein content of gain (some uncertainty for sign associated with zf2.
     ### GrazFeed documentation had +ve however, this implies that PCG increases when BC > 1. So changed to -ve
-    pcg = cg[12, ...] - z1f * (cg[13, ...] - cg[14, ...] * (level - 1)) - z2f * cg[15, ...] * (rc_start - 1)
+    #todo check this equation when converting to a heat production based model.
+    pcg = cg[12, ...] + z1f * (cg[13, ...] - cg[14, ...] * (level - 1)) - z2f * cg[15, ...] * (rc_start - 1)
     ##Empty bodyweight gain
     ebg = neg / evg
     ##Process the Liveweight REV: either save the trait value to the dictionary or over write trait value with value from the dictionary
