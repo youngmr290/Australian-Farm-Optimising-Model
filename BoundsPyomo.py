@@ -34,6 +34,7 @@ def boundarypyomo_local(params, model):
     rot_lobound_inc = False #controls rot bound
     sup_lobound_inc = False #controls sup feed bound
     dams_lobound_inc = fun.f_sa(False, sen.sav['bnd_lower_dam_inc'], 5) #lower bound dams
+    dams_lobound_w_inc = False #lower bound dams with w axis
     offs_lobound_inc = False #lower bound offs
     dams_upperbound_inc = fun.f_sa(False, sen.sav['bnd_upper_dam_inc'], 5) #upper bound on dams
     total_dams_scanned_bound_inc = np.any(sen.sav['bnd_total_dams_scanned'] != '-') #equal to bound on the total number of scanned dams
@@ -97,14 +98,40 @@ def boundarypyomo_local(params, model):
 
         ##total dam min bound - total number includes each dvp (the sheep in a given yr equal total for all dvp divided by the number of dvps in 1 yr)
         ###build bound if turned on
-        if True:#dams_lobound_inc:
+        if dams_lobound_inc:
+            ###keys to build arrays for the specified slices
+            arrays = [model.s_sale_dams, model.s_dvp_dams, model.s_groups_dams]   #more sets can be added here to customise the bound
+            index_tvg = fun.cartesian_product_simple_transpose(arrays)
+            ###build array for the axes of the specified slices
+            dams_lowbound_tvg = np.zeros((len(model.s_sale_dams), len(model.s_dvp_dams), len(model.s_groups_dams)))
+            ###set the bound
+            dams_lowbound_tvg[-1, 4:14, -1] = 50  #min of 50 bbt in t3
+            ###ravel and zip bound and dict
+            dams_lowbound = dams_lowbound_tvg.ravel()
+            tup_tvg = tuple(map(tuple, index_tvg))
+            dams_lowbound = dict(zip(tup_tvg, dams_lowbound))
+
+            ###constraint
+            def dam_lo_bound(model,t, v, g1):
+                if dams_lowbound[t,v,g1] == 0:
+                    return pe.Constraint.Skip
+                else:
+                    return sum(model.v_dams[k2,t,v,a,n,w8,i,y,g1] for k2 in model.s_k2_birth_dams
+                               for a in model.s_wean_times for n in model.s_nut_dams for w8 in model.s_lw_dams
+                               for i in model.s_tol for y in model.s_gen_merit_dams) \
+                           >= dams_lowbound[t,v,g1]
+            model.con_dam_lobound = pe.Constraint(model.s_sale_dams, model.s_dvp_dams, model.s_groups_dams, rule=dam_lo_bound,
+                                                    doc='min number of dams')
+
+        ##dam lo bound with a w axis.
+        if dams_lobound_w_inc:
             ###keys to build arrays for the specified slices
             arrays = [model.s_sale_dams, model.s_dvp_dams, model.s_lw_dams, model.s_groups_dams]   #more sets can be added here to customise the bound
             index_tvwg = fun.cartesian_product_simple_transpose(arrays)
             ###build array for the axes of the specified slices
             dams_lowbound_tvwg = np.zeros((len(model.s_sale_dams), len(model.s_dvp_dams), len(model.s_lw_dams), len(model.s_groups_dams)))
             ###set the bound
-            dams_lowbound_tvwg[-1, 4:14, 0, -1] = 50  #min of 50 bbt in t3
+            dams_lowbound_tvwg[-1, 7:14, 0, -1] = 50  #min of 50 bbt in t3 in w[0]
             # dams_lowbound_tvwg[-1, 0,0,0] = 758 #min of 50 bbt in t3
             # dams_lowbound_tvwg[-1, 0,1,0] = 758  #min of 50 bbt in t3
             # dams_lowbound_tvwg[-1, 0,2,0] = 7.8 #min of 50 bbt in t3
