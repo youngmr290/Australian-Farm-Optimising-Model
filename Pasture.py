@@ -353,7 +353,7 @@ def f_pasture(params, r_vals, nv):
     ### allowance for the decay of dry feed in the days prior to being consumed
     ### because only the feed at the end of period is decayed by dry_decay_period_p6zt
     ### scales total removal to allow for an equal portion of the feed being grazed each day
-    removal_scalar_dry_decay_daily_p6zt = 1 / (1 - dry_decay_daily_p6zt)
+    removal_scalar_dry_decay_daily_p6zt = fun.f_divide(1, (1 - dry_decay_daily_p6zt))
     removal_scalar_dry_decay_p6zt = ((1 - removal_scalar_dry_decay_daily_p6zt ** length_fz[..., na])
                                      / (1 - removal_scalar_dry_decay_daily_p6zt)
                                      / length_fz[..., na])
